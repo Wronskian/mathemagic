@@ -3,35 +3,63 @@ require './matrix'
 describe "Matrix" do
 
   context "creating a new matrix" do
-  
     size_limit = 10
-  
-    it "should be able to create an identity matrix of arbitrary size" do
-      dimension = 1 + rand(size_limit)
-      identity_matrix = Matrix.new(:identity => dimension)
-      identity_matrix.to_array.each_index do |i|
-        r = i + 1
-        row = identity_matrix.row(r)
-        row.each_index do |k|
-          c = k + 1
-          case
-            when r == c
-              row[k].should == 1
-            when r != c
-              row[k].should == 0
+    
+    context ":from_array option" do
+    
+      it "should create an object with of the class Matrix" do
+        matrix = Matrix.new(:from_array => [[ 0, 0, 0 ], [ 0, 0, 0 ]])
+        matrix.class.should == Matrix
+      end
+      
+      it "should be able to create a matrix from an array of arrays" do
+        matrix = Matrix.new(:from_array => [[ 1, 1, 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ]])
+        matrix.to_array.should == [[ 1, 1, 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ]]
+      end
+    end
+    
+    context ":identity option" do
+    
+      it "should create an object of the Matrix class" do
+        identity_matrix = Matrix.new(:identity => 3)
+        identity_matrix.class.should == Matrix
+      end
+    
+      it "should be able to create an identity matrix of arbitrary size" do
+        dimension = 1 + rand(size_limit)
+        identity_matrix = Matrix.new(:identity => dimension)
+        identity_matrix.to_array.each_index do |i|
+          r = i + 1
+          row = identity_matrix.row(r)
+          row.each_index do |k|
+            c = k + 1
+            case
+              when r == c
+                row[k].should == 1
+              when r != c
+                row[k].should == 0
+            end
           end
         end
       end
     end
     
-    it "should be able to create a zero matrix of arbitrary size" do
-      rows = 1 + rand(size_limit)
-      cols = 1 + rand(size_limit)
-      dimensions = { :rows => rows, :cols => cols }
-      zero_matrix = Matrix.new(:zero => dimensions)
-      zero_matrix.to_array.each do |row|
-        sum = row.inject{ |sum, n| sum + n }
-        sum.should == 0
+    context ":zero option" do
+    
+      it "should create an object of the class Matrix" do
+        zero_matrix = Matrix.new(:zero => { :rows => 3, :cols => 3 })
+        zero_matrix.class.should == Matrix
+      end
+    
+      it "should be able to create a zero matrix of arbitrary size" do
+        rows = 1 + rand(size_limit)
+        cols = 1 + rand(size_limit)
+        dimensions = { :rows => rows, :cols => cols }
+        zero_matrix = Matrix.new(:zero => dimensions)
+        zero_matrix.to_array.each do |row|
+          sum = row.inject{ |sum, n| sum + n }
+          sum.should == 0
+        end
       end
     end
   end
@@ -123,23 +151,35 @@ describe "Matrix" do
     end
     
     context "to_column method" do
+    
       it "should be able to turn a row matrix into a column matrix" do
         col_matrix = matrix.to_column
         col_matrix.to_array.each_index do |k|
           c = k + 1
-          col_matrix.col(c, :type => 'col') == col_check_matrix.col(c, :type => 'col')
+          col_matrix.col(c, :type => 'col').should == col_check_matrix.col(c, :type => 'col')
         end
       end
     end
     
     context "to_row method" do
+    
       it "should be able to turn a column matrix into a row matrix" do
-        #NYI
+        row_matrix = col_check_matrix.to_row
+        row_matrix.to_array.each_index do |i|
+          r = i + 1
+          row_matrix.row(r).should == matrix.row(r)
+        end
       end
     end
     
     context "to_array method" do
+    
       it "should convert a matrix object into an array object" do
+        array = matrix.to_array
+        array.class.should == Array
+      end
+      
+      it "should contain inner arrays that are identical to the matrix" do
         #NYI
       end
     end
