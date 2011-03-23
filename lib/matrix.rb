@@ -47,13 +47,9 @@
 #
 #------------------------------------------------------------------------------
 
-require 'operations'
-
 require 'spec/matrix_printer'
 
 class Matrix
-  include Operations
-
   include MatrixPrinter
 
   def initialize ( options = { :from_array => [] } )  
@@ -91,6 +87,20 @@ class Matrix
       else
         @matrix = new_matrix_array
     end    
+  end
+  
+#==============================================================================
+#
+# ENUMERABLE METHODS
+#
+#------------------------------------------------------------------------------
+
+  def each(&block)
+    @matrix.each(&block)
+  end
+  
+  def each_index(&block)
+    @matrix.each_index(&block)
   end
 
 #==============================================================================
@@ -214,7 +224,7 @@ class Matrix
       @matrix.each_index do |i|
         selected_row = row( i + 1 )
         @new_row = []        
-        @column_matrix.to_array.each do |column|
+        @column_matrix.each do |column|
           selected_column = column          
           sum = 0
           selected_row.each_index do |j|

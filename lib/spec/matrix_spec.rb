@@ -7,7 +7,7 @@ describe "Matrix" do
     
     context ":from_array option" do
     
-      it "should create an object with of the class Matrix" do
+      it "should create an object of the class Matrix" do
         matrix = Matrix.new(:from_array => [[ 0, 0, 0 ], [ 0, 0, 0 ]])
         matrix.class.should == Matrix
       end
@@ -28,7 +28,7 @@ describe "Matrix" do
       it "should be able to create an identity matrix of arbitrary size" do
         dimension = 1 + rand(size_limit)
         identity_matrix = Matrix.new(:identity => dimension)
-        identity_matrix.to_array.each_index do |i|
+        identity_matrix.each_index do |i|
           r = i + 1
           row = identity_matrix.row(r)
           row.each_index do |k|
@@ -56,7 +56,7 @@ describe "Matrix" do
         cols = 1 + rand(size_limit)
         dimensions = { :rows => rows, :cols => cols }
         zero_matrix = Matrix.new(:zero => dimensions)
-        zero_matrix.to_array.each do |row|
+        zero_matrix.each do |row|
           sum = row.inject{ |sum, n| sum + n }
           sum.should == 0
         end
@@ -84,7 +84,7 @@ describe "Matrix" do
     context "row method" do
     
       it "should be able to get an arbitrary row from a row matrix (default)" do
-        matrix.to_array.each_index do |i|
+        matrix.each_index do |i|
           r = i + 1
           check_row = matrix.to_array[i]
           matrix.row(r).should == check_row
@@ -93,7 +93,7 @@ describe "Matrix" do
       
       it "should be able to get an arbitrary row from a column matrix" do
         col_matrix = matrix.to_column
-        matrix.to_array.each_index do |i|
+        matrix.each_index do |i|
           r = i + 1
           check_row = matrix.to_array[i]
           col_matrix.row(r, :type => 'col').should == check_row
@@ -105,7 +105,7 @@ describe "Matrix" do
     
       it "should be able to get an arbitrary column from a row matrix (default)" do
         col_matrix = matrix.to_column
-        col_matrix.to_array.each_index do |k|
+        col_matrix.each_index do |k|
           c = k + 1
           check_col = col_matrix.to_array[k]
           matrix.col(c).should == check_col
@@ -114,7 +114,7 @@ describe "Matrix" do
       
       it "should be able to get an arbitrary column from a column matrix" do
         col_matrix = matrix.to_column
-        col_matrix.to_array.each_index do |k|
+        col_matrix.each_index do |k|
           c = k + 1
           check_col = col_matrix.to_array[k]
           col_matrix.col(c, :type => 'col').should == check_col
@@ -125,7 +125,7 @@ describe "Matrix" do
     context "ele method" do
     
       it "should be able to get an arbitrary element from a row matrix (default)" do
-        matrix.to_array.each_index do |i|
+        matrix.each_index do |i|
           r = i + 1
           row = matrix.row(r)
           row.each_index do |e|
@@ -138,7 +138,7 @@ describe "Matrix" do
       
       it "should be able to get an arbitrary element from a column matrix" do
         col_matrix = matrix.to_column
-        matrix.to_array.each_index do |i|
+        matrix.each_index do |i|
           r = i + 1
           row = matrix.row(r)
           row.each_index do |e|
@@ -154,7 +154,7 @@ describe "Matrix" do
     
       it "should be able to turn a row matrix into a column matrix" do
         col_matrix = matrix.to_column
-        col_matrix.to_array.each_index do |k|
+        col_matrix.each_index do |k|
           c = k + 1
           col_matrix.col(c, :type => 'col').should == col_check_matrix.col(c, :type => 'col')
         end
@@ -165,7 +165,7 @@ describe "Matrix" do
     
       it "should be able to turn a column matrix into a row matrix" do
         row_matrix = col_check_matrix.to_row
-        row_matrix.to_array.each_index do |i|
+        row_matrix.each_index do |i|
           r = i + 1
           row_matrix.row(r).should == matrix.row(r)
         end
